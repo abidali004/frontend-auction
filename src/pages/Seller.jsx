@@ -21,7 +21,8 @@ const Seller = () => {
         startTime: Yup.date().required('Start time is required'),
         endTime: Yup.date()
             .required('End time is required')
-            .min(Yup.ref('startTime'), 'End time must be after start time'),
+            .min(Yup.ref('startTime'), 'End time must be after start time')
+            .min(new Date(), 'end time must be grater then current date'),
         startPrice: Yup.string().required('Start bid price is required'),
         description: Yup.string().required('Description is required'),
         condition: Yup.string().required('Condition is required'),
@@ -77,11 +78,9 @@ const Seller = () => {
                         formData.append('photo', photo.file);
                     });
                     try {
-                        console.log("post prod ", formData);
                         await sellerPostProduct(formData)
                         toast.success("data submitted successfully")
                     } catch (error) {
-                        console.log("errrraa", error)
                         toast.error(error.message || "An error occurred")
                     }
 
@@ -122,6 +121,7 @@ const Seller = () => {
                                 />)
                         }
                         <SellerSubmitBtn isSubmitting={isSubmitting} />
+
 
                     </Form>
                 )}
